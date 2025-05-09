@@ -2,6 +2,9 @@ using Unity.Cinemachine;
 using UnityEngine;
 public class CameraController : MonoBehaviour
 {
+    static CameraController _instance;
+    public static CameraController Instance => _instance;
+
     [SerializeField] CinemachineCamera _followCamera;
     [SerializeField] CinemachineBasicMultiChannelPerlin _cinemachineBasicMultiChannelPerlin;
     float _startIntensity = 0.5f;   // 흔들기 시작할 때, 첫 강도
@@ -10,6 +13,16 @@ public class CameraController : MonoBehaviour
 
     void Awake()
     {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         _followCamera = FindAnyObjectByType<CinemachineCamera>();
         _cinemachineBasicMultiChannelPerlin = _followCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
 
@@ -18,11 +31,11 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        // 테스트 코드
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            ShakeCamera(5f, 0.1f);
-        }
+        //// 테스트 코드
+        //if(Input.GetKeyDown(KeyCode.T))
+        //{
+        //    ShakeCamera(5f, 0.1f);
+        //}
 
         if (_shakeTimer > 0)
         {

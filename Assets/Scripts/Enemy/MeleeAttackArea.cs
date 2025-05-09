@@ -6,9 +6,7 @@ public class MeleeAttackArea : MonoBehaviour, IParryable
 {
     public ParryType ParryType => ParryType.Melee;
     public Transform ParriedTransform => transform.root;
-
-    public ElementalType ElementalType => _elementalType;
-    [SerializeField] ElementalType _elementalType;
+    [field: SerializeField] public ElementalType ElementalType { get; set; }
 
     float _fadeSpeed = 1f;
     SpriteRenderer _spriteRenderer;

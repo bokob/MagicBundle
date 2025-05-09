@@ -9,12 +9,15 @@ public class PlayerAttackState : State
 
     PlayerParryState _playerParryState;
 
+    MagicBundle _magicBundle;
+
     [field : SerializeField] public bool IsAttack { get; private set; }
     void Start()
     {
         _anim = GetComponent<Animator>();
         _playerFSM = GetComponent<PlayerFSM>();
         _playerParryState = GetComponent<PlayerParryState>();
+        _magicBundle = GetComponentInChildren<MagicBundle>();
     }
 
     public override void OnStateEnter()
@@ -50,7 +53,8 @@ public class PlayerAttackState : State
         if (dir.x != 0)
             _playerFSM.Flip(dir.x);
 
-        _playerParryState.ReleaseBunddle();
+        _magicBundle.ReleaseMagic();
+        
         _anim.SetTrigger("AttackTrigger");
 
         // 애니메이션 길이만큼 대기 (예: 0.5초)

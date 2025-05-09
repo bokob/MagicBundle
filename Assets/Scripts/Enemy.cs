@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +9,10 @@ public class Enemy : MonoBehaviour
     MeleeAttackArea _meleeAttackArea;
     Coroutine _meleeCoroutine;
 
+    float _launchTimer = 0f;
+    float _launchTime = 3f; // 발사 시간
+
+    float _targetDistance;
 
     void Start()
     {
@@ -19,12 +22,22 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             RangeAttack();
         }
+        if (_launchTimer >= _launchTime)
+        {
+            _launchTimer = 0f;
+            RangeAttack();
+        }
+        else
+        {
+            _launchTimer += Time.deltaTime;
+        }
 
-        if(Input.GetKeyDown(KeyCode.K))
+        _targetDistance = Vector2.Distance(transform.position, _target.position);
+        if (_targetDistance < 3f)
         {
             MeleeAreaAttack();
         }

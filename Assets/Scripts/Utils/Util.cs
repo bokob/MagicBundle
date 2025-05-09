@@ -2,7 +2,7 @@ using System;
 
 public class Util
 {
-    #region 다른 타입 -> Enum 변환
+    #region Enum 변환
     // string -> enum
     public static T StringToEnum<T>(string str)
     {

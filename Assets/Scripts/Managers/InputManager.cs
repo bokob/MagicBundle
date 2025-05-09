@@ -16,11 +16,11 @@ public class InputManager
     #endregion
 
     #region 액션
-    public Action attackAction;     // 주먹, 각법
-    public Action parryStartAction; // 패링 시작
-    public Action parryEndAction;   // 패링 종료
-    public Action meditationAction; // 운기조식
-    public Action<Vector2> dashAction;       // 이형환위
+    public Action attackAction;                   // 공격
+    public Action parryAction;                    // 패링
+    public Action<Vector2> dashAction;            // 대시
+    public Action<bool> rotateMagicAction;  // 마법 보따리 회전
+    public Action reloadMagicAction;                   // 장전
     #endregion
 
     public void Init()
@@ -45,6 +45,10 @@ public class InputManager
         _inputSystemActions.Player.Parry.performed += OnParry;
         _inputSystemActions.Player.Parry.canceled += OnParry;
         _inputSystemActions.Player.Release.performed += OnRelease;
+
+        _inputSystemActions.Player.Reload.performed += OnReload;
+
+        _inputSystemActions.Player.RotateMagicBundle.performed += OnRotateMagicBundle;
     }
 
     void OnMove(InputAction.CallbackContext context)
@@ -78,20 +82,30 @@ public class InputManager
 
     void OnParry(InputAction.CallbackContext context)
     {
-        if(context.performed)
-        {
-            parryStartAction?.Invoke();
-        }
-        else if(context.canceled)
-        {
-            parryEndAction?.Invoke();
-        }
         IsPressParry = context.ReadValueAsButton();
+        if (context.performed)
+        {
+            parryAction?.Invoke();
+        }
+        //Debug.Log("IsPressParry: " + IsPressParry);
     }
 
     void OnRelease(InputAction.CallbackContext context)
     {
         Debug.Log("마법 방출");
+    }
+
+    void OnReload(InputAction.CallbackContext context)
+    {
+        Debug.Log("마법 장전");
+        reloadMagicAction?.Invoke();
+    }
+
+    void OnRotateMagicBundle(InputAction.CallbackContext context)
+    {
+        float x = context.ReadValue<Vector2>().x;
+        bool isCCW = x < 0;
+        rotateMagicAction?.Invoke(isCCW);
     }
 
     public void Clear()
