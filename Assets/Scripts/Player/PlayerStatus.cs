@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStatus : Status, IDamagable
@@ -8,6 +9,7 @@ public class PlayerStatus : Status, IDamagable
     [field: SerializeField] public float MP { get; private set; }
     WaitForSeconds _hitWait = new WaitForSeconds(0.5f);
 
+    [SerializeField] float healMPAmount = 0.025f;
     void Start()
     {
         // 초기화
@@ -15,6 +17,11 @@ public class PlayerStatus : Status, IDamagable
         HP = MaxHP;
         MaxMP = 100;
         MP = 0;
+    }
+
+    void Update()
+    {
+        HealMP();
     }
 
     public void TakeDamage(int damage)
@@ -45,5 +52,21 @@ public class PlayerStatus : Status, IDamagable
         IsHit = true;
         yield return _hitWait;
         IsHit = false;
+    }
+
+    public void HealMP()
+    {
+        if(MP >= MaxMP) return;
+        MP = Mathf.Clamp(MP + healMPAmount, 0, MaxMP);
+        UI_EventBus.OnMPChanged?.Invoke(MP);
+    }
+
+    public void PayUltimate()
+    {
+        if (MP >= 100)
+        {
+            MP = Mathf.Clamp(MP - 100, 0, MaxMP);
+            UI_EventBus.OnMPChanged?.Invoke(MP);
+        }
     }
 }
