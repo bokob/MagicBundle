@@ -21,14 +21,9 @@ public class MagicBundle : MonoBehaviour
     void Awake()
     {
         if(_instance == null)
-        {
             _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
     void Start()
@@ -63,10 +58,11 @@ public class MagicBundle : MonoBehaviour
     // 추가
     public void AddMagic(ElementalType magic)
     {
-        OverCharge();
-
         if (_magicBundle.Count + _reloadList.Count >= _maxSlotCount)
+        {
+            OverCharge();
             return;
+        }
 
         _magicBundle.Add(magic);
         _uiMagicBundleInner.UpdateSlots(_magicBundle);

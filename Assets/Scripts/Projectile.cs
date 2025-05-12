@@ -57,7 +57,11 @@ public class Projectile : MonoBehaviour, IParryable
 
         if (collision.CompareTag("Player"))
         {
-            if (_master != null && collision.TryGetComponent<PlayerParryState>(out PlayerParryState playerParry))
+            //if (_master != null && collision.TryGetComponent<PlayerParryState>(out PlayerParryState playerParry))
+            //{
+            //    playerParry.ReceiveAttack(this);
+            //}
+            if (_master != null && collision.TryGetComponent<PlayerParry>(out PlayerParry playerParry))
             {
                 playerParry.ReceiveAttack(this);
             }

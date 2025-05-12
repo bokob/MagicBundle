@@ -37,6 +37,7 @@ public class PlayerStatus : Status, IDamagable
     public void OverCharge(float amount)
     {
         MP = Mathf.Clamp(MP + amount, 0, MaxMP);
+        Debug.LogWarning($"Mp: {MP}");
         UI_EventBus.OnMPChanged?.Invoke(MP);
     }
 
@@ -45,5 +46,14 @@ public class PlayerStatus : Status, IDamagable
         IsHit = true;
         yield return _hitWait;
         IsHit = false;
+    }
+
+    public void PayUltimate()
+    {
+        if (MP >= 100)
+        {
+            MP = Mathf.Clamp(MP - 100, 0, MaxMP);
+            UI_EventBus.OnMPChanged?.Invoke(MP);
+        }
     }
 }

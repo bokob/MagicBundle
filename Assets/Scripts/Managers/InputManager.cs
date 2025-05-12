@@ -17,7 +17,8 @@ public class InputManager
 
     #region 액션
     public Action attackAction;                   // 공격
-    public Action parryAction;                    // 패링
+    public Action parryStartAction;               // 패링 시작
+    public Action parryEndAction;                 // 패링 종료
     public Action<Vector2> dashAction;            // 대시
     public Action<bool> rotateMagicAction;  // 마법 보따리 회전
     public Action reloadMagicAction;                   // 장전
@@ -85,7 +86,11 @@ public class InputManager
         IsPressParry = context.ReadValueAsButton();
         if (context.performed)
         {
-            parryAction?.Invoke();
+            parryStartAction?.Invoke();
+        }
+        else if(context.canceled)
+        {
+            parryEndAction?.Invoke();
         }
         //Debug.Log("IsPressParry: " + IsPressParry);
     }

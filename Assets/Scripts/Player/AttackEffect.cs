@@ -2,23 +2,12 @@ using UnityEngine;
 
 public class AttackEffect : MonoBehaviour
 {
-    Animator _anim;
+    float _rotationRadius = 1f;
+    Transform _player;
+    Vector2 _prevMouseWorldPos;
 
     void Start()
     {
-        _anim = GetComponent<Animator>();
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Play();
-        }
-    }
-
-    public void Play()
-    {
-        _anim.Play("Play");
+        _player = transform.root;
     }
 }

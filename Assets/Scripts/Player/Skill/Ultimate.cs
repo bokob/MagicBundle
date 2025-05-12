@@ -15,26 +15,39 @@ public class Ultimate : MonoBehaviour
     [SerializeField] GameObject _blackHolePrefab;
     [SerializeField] GameObject _gravityHolePrefab;
 
-    // Update is called once per frame
+    PlayerStatus _playerStatus;
+
+    void Start()
+    {
+        _playerStatus = GetComponentInParent<PlayerStatus>();
+    }
+
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            Transform blackHoleTransform = Instantiate(_blackHolePrefab, transform.position, Quaternion.identity).transform;
-            blackHoleTransform.right = (Vector3)Managers.Input.MouseWorldPos - transform.position;
-            Destroy(blackHoleTransform.gameObject, 1f);
-        }
 
-        if(Input.GetKeyDown(KeyCode.Y))
+        if (_playerStatus.MP >= 100)
         {
-            StartCoroutine(KamuiCoroutine());
-        }
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                _playerStatus.PayUltimate();
+                Transform blackHoleTransform = Instantiate(_blackHolePrefab, transform.position, Quaternion.identity).transform;
+                blackHoleTransform.right = (Vector3)Managers.Input.MouseWorldPos - transform.position;
+                Destroy(blackHoleTransform.gameObject, 1f);
+            }
 
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            Vector3 pos = (Vector3)Managers.Input.MouseWorldPos;
-            Transform gravityHoleTransform = Instantiate(_gravityHolePrefab, pos, Quaternion.identity).transform;
-            Destroy(gravityHoleTransform.gameObject, 1f);
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                _playerStatus.PayUltimate();
+                StartCoroutine(KamuiCoroutine());
+            }
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                _playerStatus.PayUltimate();
+                Vector3 pos = (Vector3)Managers.Input.MouseWorldPos;
+                Transform gravityHoleTransform = Instantiate(_gravityHolePrefab, pos, Quaternion.identity).transform;
+                Destroy(gravityHoleTransform.gameObject, 1f);
+            }
         }
     }
 
